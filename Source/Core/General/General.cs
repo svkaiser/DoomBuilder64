@@ -163,8 +163,9 @@ namespace CodeImp.DoomBuilder
 		private static PluginManager plugins;
 		private static ColorCollection colors;
 		private static TypesManager types;
-		private static Clock clock;
-		private static ErrorLogger errorlogger;
+        //private static Clock clock;
+        public static Stopwatch stopwatch; // instead of clock
+        private static ErrorLogger errorlogger;
 		private static Mutex appmutex;
 		
 		// Configurations
@@ -206,7 +207,7 @@ namespace CodeImp.DoomBuilder
 		public static MapManager Map { get { return map; } }
 		public static ActionManager Actions { get { return actions; } }
 		internal static PluginManager Plugins { get { return plugins; } }
-		public static Clock Clock { get { return clock; } }
+		//public static Clock Clock { get { return clock; } }
 		public static bool DebugBuild { get { return debugbuild; } }
 		internal static TypesManager Types { get { return types; } }
 		public static string AutoLoadFile { get { return autoloadfile; } }
@@ -654,10 +655,12 @@ namespace CodeImp.DoomBuilder
 				
 				// Create application clock
 				General.WriteLogLine("Creating application clock...");
-				clock = new Clock();
-				
-				// Create types manager
-				General.WriteLogLine("Creating types manager...");
+                //clock = new Clock();
+                stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                // Create types manager
+                General.WriteLogLine("Creating types manager...");
 				types = new TypesManager();
 				
 				// Do auto map loading when window is delayed
@@ -832,7 +835,7 @@ namespace CodeImp.DoomBuilder
 				if(editing != null) editing.Dispose(); editing = null;
 				if(mainwindow != null) mainwindow.Dispose();
 				if(actions != null) actions.Dispose();
-				if(clock != null) clock.Dispose();
+				//if(clock != null) clock.Dispose();
 				if(plugins != null) plugins.Dispose();
 				if(types != null) types.Dispose();
 				try { D3DDevice.Terminate(); } catch(Exception) { }
