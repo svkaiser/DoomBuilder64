@@ -120,18 +120,20 @@ namespace CodeImp.DoomBuilder.BuilderModes
 				// We just use pixels for coordinates for now
 				if(Sidedef.Line.IsFlagSet(General.Map.Config.LowerUnpeggedFlag))
 				{
-					// When lower unpegged is set, the middle texture is bound to the bottom
-					t1.y = tsz.y - geoheight;
-				}
+                    // When lower unpegged is set, the middle texture is bound to the bottom
+                    t1.y = tsz.y - geoheight;
 
-                // villsa
-                if (General.Map.FormatInterface.InDoom64Mode)
-                {
-                    if (Sidedef.Line.IsFlagSet(General.Map.Config.UpperUnpeggedFlag))
+                    // villsa - if V mirrored, offset Y offset by texture height
+                    if (Sidedef.Line.IsFlagSet("2147483648"))
                     {
-                        // villsa - when upper unpegged is set, snap the offset by the texture height
-                        t1.y = (tsz.y - (geotop % tsz.y));
+                        t1.y += tsz.y;
                     }
+                }
+                // villsa
+                else if (General.Map.FormatInterface.InDoom64Mode && Sidedef.Line.IsFlagSet(General.Map.Config.UpperUnpeggedFlag))
+                {
+                    // villsa - when upper unpegged is set, snap the offset by the texture height
+                    t1.y = -geobottom - geoheight;
                 }
 
 				t2.x = t1.x + Sidedef.Line.Length;
